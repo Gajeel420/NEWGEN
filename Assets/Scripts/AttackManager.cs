@@ -3,6 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Manages attack execution, startup/active/recovery frames, and attack cancellation.
 /// Integrates with ComboDetector for combo damage scaling and attack linking.
+/// Works with AnimationController for frame-perfect animation timing.
 /// Attach this to the character GameObject.
 /// </summary>
 public class AttackManager : MonoBehaviour
@@ -10,23 +11,27 @@ public class AttackManager : MonoBehaviour
     private Character character;
     private CommandBuffer commandBuffer;
     private ComboDetector comboDetector;
+    private AnimationController animationController;
     private Hitbox[] hitboxes;
 
     [SerializeField] private float attackStartupBuffer = 0.1f; // Time before hitbox activates
     [SerializeField] private float attackActiveTime = 0.2f; // How long hitbox stays active
     [SerializeField] private float attackRecoveryTime = 0.3f; // Cooldown after attack
     [SerializeField] private float comboLinkCancelWindow = 0.1f; // Can cancel into next combo during this time in recovery
+    [SerializeField] private bool useAnimationTiming = true; // Use animation frames instead of timer
 
     private bool isAttacking = false;
     private float attackTimeRemaining = 0f;
     private string currentAttackType = "";
     private float comboScalar = 1f;
+    private float normalizedAnimationTime = 0f;
 
     void Awake()
     {
         character = GetComponent<Character>();
         commandBuffer = GetComponent<CommandBuffer>();
         comboDetector = GetComponent<ComboDetector>();
+        animationController = GetComponent<AnimationController>();
         hitboxes = GetComponentsInChildren<Hitbox>();
     }
 
@@ -68,8 +73,14 @@ public class AttackManager : MonoBehaviour
             hitbox.Deactivate();
 
         character.SetState(Character.CharacterState.Attacking);
-        return true;
-    }
+
+        // Trigger animation if AnimationController is available
+        if (animationController != null)
+        {
+            int attackTypeHash = GetAttackTypeHash(attackType);
+            animationController.PlayAttackAnimation(attackTypeHash);
+        }
+
         return true;
     }
 
@@ -189,5 +200,38 @@ public class AttackManager : MonoBehaviour
         // Draw attack state
         Vector3 pos = transform.position + Vector3.up * 1.5f;
         Debug.Log($"AttackManager: isAttacking={isAttacking}, timeRemaining={attackTimeRemaining:F2}");
+    }
+
+    /// <summary>
+    /// Converts attack type string to animator parameter hash
+    /// </summary>
+    private int GetAttackTypeHash(string attackType)
+    {
+        return attackType.ToLower() switch
+        {
+            "light" => 0,
+            "medium" => 1,
+            "heavy" => 2,
+            _ => 0
+        };
+    }
+
+    /// <summary>
+    /// Gets normalized animation time from AnimationController if available
+    /// Falls back to timer-based calculation
+    /// </summary>
+    private float GetNormalizedAttackTime()
+    {
+        if (useAnimationTiming && animationController != null)
+        {
+            return animationController.GetNormalizedAnimationTime();
+        }
+        else
+        {
+            // Calculate normalized time from timer
+            float totalAttackTime = attackStartupBuffer + attackActiveTime + attackRecoveryTime;
+            float elapsedTime = totalAttackTime - attackTimeRemaining;
+            return Mathf.Clamp01(elapsedTime / totalAttackTime);
+        }
     }
 }

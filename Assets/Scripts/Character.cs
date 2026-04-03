@@ -36,6 +36,8 @@ public class Character : MonoBehaviour
     public event HealthChangeDelegate OnHealthChanged;
     public delegate void DeathDelegate();
     public event DeathDelegate OnDeath;
+    public delegate void StateChangeDelegate(CharacterState newState);
+    public event StateChangeDelegate OnStateChanged;
 
     protected virtual void Awake()
     {
@@ -128,6 +130,7 @@ public class Character : MonoBehaviour
             OnStateExit(currentState);
             currentState = newState;
             OnStateEnter(currentState);
+            OnStateChanged?.Invoke(currentState);
         }
     }
 
@@ -213,6 +216,11 @@ public class Character : MonoBehaviour
     public int GetFacingDirection() => facingDirection;
     public float GetHitstunTimeRemaining() => hitstunTimeRemaining;
     public bool IsInHitstun() => hitstunTimeRemaining > 0f;
+
+    // Properties (for animation integration)
+    public CharacterState CurrentState => currentState;
+    public float Health => currentHealth;
+    public float MaxHealth => stats != null ? stats.maxHealth : 100f;
 
     // Setters
     public void SetFacingDirection(int direction) => facingDirection = Mathf.Sign(direction) != 0 ? (int)Mathf.Sign(direction) : 1;
