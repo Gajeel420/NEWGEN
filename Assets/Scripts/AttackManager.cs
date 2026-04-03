@@ -2,26 +2,31 @@ using UnityEngine;
 
 /// <summary>
 /// Manages attack execution, startup/active/recovery frames, and attack cancellation.
+/// Integrates with ComboDetector for combo damage scaling and attack linking.
 /// Attach this to the character GameObject.
 /// </summary>
 public class AttackManager : MonoBehaviour
 {
     private Character character;
     private CommandBuffer commandBuffer;
+    private ComboDetector comboDetector;
     private Hitbox[] hitboxes;
 
     [SerializeField] private float attackStartupBuffer = 0.1f; // Time before hitbox activates
     [SerializeField] private float attackActiveTime = 0.2f; // How long hitbox stays active
     [SerializeField] private float attackRecoveryTime = 0.3f; // Cooldown after attack
+    [SerializeField] private float comboLinkCancelWindow = 0.1f; // Can cancel into next combo during this time in recovery
 
     private bool isAttacking = false;
     private float attackTimeRemaining = 0f;
     private string currentAttackType = "";
+    private float comboScalar = 1f;
 
     void Awake()
     {
         character = GetComponent<Character>();
         commandBuffer = GetComponent<CommandBuffer>();
+        comboDetector = GetComponent<ComboDetector>();
         hitboxes = GetComponentsInChildren<Hitbox>();
     }
 
@@ -33,11 +38,26 @@ public class AttackManager : MonoBehaviour
 
     /// <summary>
     /// Execute an attack if not already attacking or in hitstun.
+    /// Can link into next combo if within the cancel window.
     /// </summary>
     public bool TryAttack(string attackType)
     {
-        if (isAttacking || character.IsInHitstun() || !character.IsAlive())
+        // Can cancel into next move if in recovery phase of previous attack
+        bool canComboCancel = isAttacking && attackTimeRemaining <= comboLinkCancelWindow;
+
+        if (!canComboCancel && (isAttacking || character.IsInHitstun() || !character.IsAlive()))
             return false;
+
+        // Record input for combo detection
+        if (comboDetector != null)
+        {
+            comboDetector.RecordInput(attackType);
+            comboScalar = comboDetector.GetComboScalar();
+        }
+        else
+        {
+            comboScalar = 1f;
+        }
 
         currentAttackType = attackType;
         isAttacking = true;
@@ -48,6 +68,8 @@ public class AttackManager : MonoBehaviour
             hitbox.Deactivate();
 
         character.SetState(Character.CharacterState.Attacking);
+        return true;
+    }
         return true;
     }
 
@@ -85,6 +107,13 @@ public class AttackManager : MonoBehaviour
         {
             if (hitbox.GetAttackType().ToLower() == attackType.ToLower())
             {
+                // Apply combo scaling to damage and knockback
+                float baseDamage = hitbox.GetDamage();
+                float baseKnockback = hitbox.GetKnockbackForce();
+
+                hitbox.SetDamage(baseDamage * comboScalar);
+                hitbox.SetKnockbackForce(baseKnockback * comboScalar);
+
                 hitbox.Activate();
             }
         }
@@ -119,6 +148,15 @@ public class AttackManager : MonoBehaviour
     public bool IsAttacking() => isAttacking;
     public float GetAttackTimeRemaining() => attackTimeRemaining;
     public string GetCurrentAttackType() => currentAttackType;
+    public float GetComboScalar() => comboScalar;
+
+    /// <summary>
+    /// Get the current combo hit count (if active).
+    /// </summary>
+    public int GetComboCount()
+    {
+        return comboDetector != null ? comboDetector.GetComboCount() : 0;
+    }
 
     /// <summary>
     /// Cancel the current attack (for combo links).
@@ -129,6 +167,16 @@ public class AttackManager : MonoBehaviour
         {
             EndAttack();
         }
+    }
+
+    /// <summary>
+    /// Reset combo state (called when combat ends or new opponent encountered).
+    /// </summary>
+    public void ResetCombo()
+    {
+        if (comboDetector != null)
+            comboDetector.ResetCombo();
+        comboScalar = 1f;
     }
 
     void OnDrawGizmos()
