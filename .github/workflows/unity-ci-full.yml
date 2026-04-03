@@ -1,0 +1,66 @@
+name: Unity CI - tests and build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  UNITY_VERSION: 2022.3.10f1
+
+jobs:
+  build-and-test:
+    name: Run Unity tests and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: ${{ runner.os }}-unity-${{ env.UNITY_VERSION }}-${{ hashFiles('**/Packages/manifest.json') }}
+
+      - name: Setup Unity
+        uses: game-ci/unity-setup@v2
+        with:
+          unityVersion: ${{ env.UNITY_VERSION }}
+
+      - name: Activate Unity license
+        uses: game-ci/unity-activate@v2
+        with:
+          license: ${{ secrets.UNITY_LICENSE }}
+
+      - name: Run Edit Mode & Play Mode tests
+        uses: game-ci/unity-test-runner@v2
+        with:
+          unityVersion: ${{ env.UNITY_VERSION }}
+          runTests: true
+          testMode: all
+
+      - name: Build Windows standalone
+        uses: game-ci/unity-builder@v2
+        with:
+          unityVersion: ${{ env.UNITY_VERSION }}
+          targetPlatform: StandaloneWindows64
+          buildName: build-Windows
+
+      - name: Upload Windows build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-Windows
+          path: build-Windows
+
+      - name: Deactivate Unity license
+        if: always()
+        uses: game-ci/unity-activate@v2
+        with:
+          action: return
+          license: ${{ secrets.UNITY_LICENSE }}
+
+# Notes:
+# - Add `UNITY_LICENSE` secret containing the Unity license file contents or use appropriate Unity authentication.
+# - Adjust `UNITY_VERSION` to the exact Unity editor version you use (e.g., 2022.3.xxxx).
+# - For macOS/Linux builds, add additional build steps with appropriate `targetPlatform`.
