@@ -4,6 +4,7 @@ using UnityEngine;
 /// Manages attack execution, startup/active/recovery frames, and attack cancellation.
 /// Integrates with ComboDetector for combo damage scaling and attack linking.
 /// Works with AnimationController for frame-perfect animation timing.
+/// Integrates with BlockingSystem for blocked damage and SpecialMovesManager for special moves.
 /// Attach this to the character GameObject.
 /// </summary>
 public class AttackManager : MonoBehaviour
@@ -12,6 +13,9 @@ public class AttackManager : MonoBehaviour
     private CommandBuffer commandBuffer;
     private ComboDetector comboDetector;
     private AnimationController animationController;
+    private BlockingSystem blockingSystem;
+    private SpecialMovesManager specialMovesManager;
+    private ParticleEffectManager particleEffectManager;
     private Hitbox[] hitboxes;
 
     [SerializeField] private float attackStartupBuffer = 0.1f; // Time before hitbox activates
@@ -32,6 +36,9 @@ public class AttackManager : MonoBehaviour
         commandBuffer = GetComponent<CommandBuffer>();
         comboDetector = GetComponent<ComboDetector>();
         animationController = GetComponent<AnimationController>();
+        blockingSystem = GetComponent<BlockingSystem>();
+        specialMovesManager = GetComponent<SpecialMovesManager>();
+        particleEffectManager = GetComponent<ParticleEffectManager>();
         hitboxes = GetComponentsInChildren<Hitbox>();
     }
 

@@ -1,9 +1,9 @@
-# 2D Fighting Games Framework - Phase 1-4 Complete
+# 2D Fighting Games Framework - Phase 1-5 Complete
 
-A modular, production-ready framework for building 2D fighting games in Unity. Implements core character mechanics, combat systems, input handling, animations, and UI/game flow management.
+A modular, production-ready framework for building 2D fighting games in Unity. Implements core character mechanics, combat systems, input handling, animations, UI/game flow management, and advanced mechanics.
 
 **Repository:** https://github.com/Gajeel420/NEWGEN  
-**Status:** Phase 1-4 Complete | Ready for Phase 5
+**Status:** Phase 1-5 Complete | Ready for Phase 6
 
 ---
 
@@ -20,8 +20,12 @@ This framework provides everything needed to build a functional 2D fighting game
 - ✅ **Animation System:** Synchronized animator with frame-perfect timing
 - ✅ **Game Flow Manager:** Round/match logic, state management
 - ✅ **UI System:** HUD, menus, health bars, combo counters
-- ✅ **21 C# Scripts:** Production-ready, well-documented code
-- ✅ **7 Setup Guides:** Comprehensive documentation for integration
+- ✅ **Blocking Mechanics:** Block stamina, damage reduction, block break
+- ✅ **Special Moves:** Input sequence detection, customizable special attacks
+- ✅ **Particle Effects:** Visual feedback with object pooling
+- ✅ **Knockdown Recovery:** Wakeup invulnerability and recovery mechanics
+- ✅ **27 C# Scripts:** Production-ready, well-documented code
+- ✅ **8 Setup Guides:** Comprehensive documentation for integration
 
 ---
 
@@ -85,6 +89,14 @@ Follow **PHASE_2_INTEGRATION.md** to create your first character:
 - Menu screens: Main menu, pause menu, game over screen
 - Round/match state management with win conditions
 
+### Phase 5: Advanced Mechanics ✓
+- BlockingSystem with stamina/durability management
+- SpecialMoveDetector for input sequence recognition
+- Special moves as configurable ScriptableObjects
+- ParticleEffectManager with object pooling
+- KnockdownRecoverySystem with wakeup invulnerability
+- Enhanced visual feedback for all actions
+
 ---
 
 ## Documentation
@@ -98,6 +110,7 @@ Follow **PHASE_2_INTEGRATION.md** to create your first character:
 | **PHASE_2_VERIFICATION.md** | Testing, debugging, validation |
 | **PHASE_3_ANIMATION_GUIDE.md** | Animator setup, animation synchronization |
 | **PHASE_4_UI_GUIDE.md** | Game flow, menus, HUD, UI integration |
+| **PHASE_5_ADVANCED_MECHANICS_GUIDE.md** | Blocking, specials, particles, knockdown |
 
 ---
 
@@ -166,9 +179,12 @@ Final = Base × ZoneMultiplier × ComboScalar
 - PauseMenuScreen.cs — Pause menu
 - GameOverScreen.cs — Match end screen
 
----
-
-## Key Features
+**Advanced Mechanics (Phase 5):**
+- BlockingSystem.cs — Block mechanics with stamina
+- SpecialMove.cs — Special move definition (ScriptableObject)
+- SpecialMovesManager.cs — Special move detection & execution
+- ParticleEffectManager.cs — Visual feedback with pooling
+- KnockdownRecoverySystem.cs — Knockdown and wakeup mechanics
 
 ✅ **Modular** — Use individual systems or full framework  
 ✅ **Extensible** — Easy to add special moves, blocking, etc.  
@@ -211,11 +227,11 @@ Final = Base × ZoneMultiplier × ComboScalar
 - ✅ **Phase 2:** Core framework (characters, combat, combos)
 - ✅ **Phase 3:** Animation system (Animator integration)
 - ✅ **Phase 4:** Game flow & UI (menus, HUD)
+- ✅ **Phase 5:** Advanced mechanics (blocking, specials, particles, knockdown)
 
 **Upcoming:**
-- **Phase 5:** Advanced mechanics (blocking, special moves, particle effects)
-- **Phase 6:** Character balance & testing
-- **Phase 7:** Audio system (music, SFX, voice lines)
+- **Phase 6:** Audio system (music, SFX, voice lines)
+- **Phase 7:** Character balance & polish
 - **Phase 8:** Release packaging & deployment
 
 ---
@@ -270,8 +286,10 @@ character.GetComponent<CharacterStats>().CopyFrom(stats);
 - **Character Problem?** → See CHARACTER_SETUP_GUIDE.md
 - **Combat Not Working?** → See PHASE_2_INTEGRATION.md
 - **Combo Issues?** → See COMBO_SYSTEM_GUIDE.md
-- **Debugging Help?** → See PHASE_2_VERIFICATION.md
+- **Animation Help?** → See PHASE_3_ANIMATION_GUIDE.md
+- **UI/Game Flow?** → See PHASE_4_UI_GUIDE.md
+- **Blocking/Specials?** → See PHASE_5_ADVANCED_MECHANICS_GUIDE.md
 
 ---
 
-**Ready to extend?** Start Phase 5 by implementing advanced mechanics (blocking, special moves, particle effects).
+**Ready to extend?** Start Phase 6 by implementing audio system (music, sound effects, voice lines).
