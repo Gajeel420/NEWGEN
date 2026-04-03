@@ -1,9 +1,9 @@
-# 2D Fighting Games Framework - Phase 1-6 Complete
+# 2D Fighting Games Framework - Phase 1-7 Complete
 
-A modular, production-ready framework for building 2D fighting games in Unity. Implements core character mechanics, combat systems, input handling, animations, UI/game flow management, advanced mechanics, and a complete audio system.
+A modular, production-ready framework for building 2D fighting games in Unity. Implements core character mechanics, combat systems, input handling, animations, UI/game flow management, advanced mechanics, audio system, and comprehensive balance testing tools.
 
 **Repository:** https://github.com/Gajeel420/NEWGEN  
-**Status:** Phase 1-6 Complete | Ready for Phase 7 (Balance & Testing)
+**Status:** Phase 1-7 Complete | Ready for Phase 8 (Release Packaging)
 
 ---
 
@@ -25,8 +25,9 @@ This framework provides everything needed to build a functional 2D fighting game
 - ✅ **Particle Effects:** Visual feedback with object pooling
 - ✅ **Knockdown Recovery:** Wakeup invulnerability and recovery mechanics
 - ✅ **Audio System:** Music, SFX, voice announcements, audio settings persistence
-- ✅ **33 C# Scripts:** Production-ready, well-documented code
-- ✅ **9 Setup Guides:** Comprehensive documentation for integration
+- ✅ **Balance Testing:** Performance profiling, statistics tracking, tier ranking
+- ✅ **39 C# Scripts:** Production-ready, well-documented code
+- ✅ **10 Setup Guides:** Comprehensive documentation for integration
 
 ---
 
@@ -108,6 +109,17 @@ Follow **PHASE_2_INTEGRATION.md** to create your first character:
 - Object pooling for efficient SFX playback (4x source pool)
 - Smooth music fade transitions and announcement queuing
 
+### Phase 7: Balance & Testing ✓
+- PerformanceProfiler for real-time FPS and memory monitoring
+- StatisticsTracker for detailed combat statistics collection
+- BalanceAnalyzer with character tier ranking (S-F)
+- BalanceTestManager for automated test session management
+- CharacterBalanceConfig for preset balance configurations
+- BalanceTestUI for displaying reports and diagnostics
+- Matchup analysis with problematic combo detection
+- Win rate based balance status (Balanced/Over/Underpowered)
+- Frame spike detection and performance diagnostics
+
 ---
 
 ## Documentation
@@ -123,6 +135,7 @@ Follow **PHASE_2_INTEGRATION.md** to create your first character:
 | **PHASE_4_UI_GUIDE.md** | Game flow, menus, HUD, UI integration |
 | **PHASE_5_ADVANCED_MECHANICS_GUIDE.md** | Blocking, specials, particles, knockdown |
 | **PHASE_6_AUDIO_GUIDE.md** | Audio system setup, music, SFX, voice, settings |
+| **PHASE_7_BALANCE_TESTING_GUIDE.md** | Performance testing, statistics, balance analysis |
 
 ---
 
@@ -205,6 +218,14 @@ Final = Base × ZoneMultiplier × ComboScalar
 - AudioSettings.cs — Volume persistence with PlayerPrefs
 - VoiceAnnouncerSystem.cs — Announcer lines and commentary
 - AudioEventIntegrator.cs — Event-driven audio triggers
+
+**Balance & Testing (Phase 7):**
+- PerformanceProfiler.cs — Real-time performance monitoring
+- StatisticsTracker.cs — Combat statistics collection
+- BalanceAnalyzer.cs — Character balance analysis & tier ranking
+- BalanceTestManager.cs — Test session management
+- CharacterBalanceConfig.cs — Balance preset configuration
+- BalanceTestUI.cs — Test results display and diagnostics
 
 ✅ **Modular** — Use individual systems or full framework  
 ✅ **Extensible** — Easy to add special moves, blocking, etc.  
