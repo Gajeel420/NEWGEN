@@ -1,0 +1,24 @@
+name: Unity Placeholder CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  ci:
+    name: CI (placeholder)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: List workspace
+        run: ls -la
+
+      - name: Placeholder - Unity CI instructions
+        run: |
+          echo "This workflow is a placeholder for Unity CI."
+          echo "To run Unity tests and builds, replace these steps with a Unity test/build action (e.g. game-ci/unity-test-runner or game-ci/unity-builder)."
+          echo "Add required secrets such as UNITY_LICENSE or use GitHub's Unity authentication as documented by the chosen action."
