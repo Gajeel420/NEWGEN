@@ -1,9 +1,9 @@
-# 2D Fighting Games Framework - Phase 1-5 Complete
+# 2D Fighting Games Framework - Phase 1-6 Complete
 
-A modular, production-ready framework for building 2D fighting games in Unity. Implements core character mechanics, combat systems, input handling, animations, UI/game flow management, and advanced mechanics.
+A modular, production-ready framework for building 2D fighting games in Unity. Implements core character mechanics, combat systems, input handling, animations, UI/game flow management, advanced mechanics, and a complete audio system.
 
 **Repository:** https://github.com/Gajeel420/NEWGEN  
-**Status:** Phase 1-5 Complete | Ready for Phase 6
+**Status:** Phase 1-6 Complete | Ready for Phase 7 (Balance & Testing)
 
 ---
 
@@ -24,8 +24,9 @@ This framework provides everything needed to build a functional 2D fighting game
 - ✅ **Special Moves:** Input sequence detection, customizable special attacks
 - ✅ **Particle Effects:** Visual feedback with object pooling
 - ✅ **Knockdown Recovery:** Wakeup invulnerability and recovery mechanics
-- ✅ **27 C# Scripts:** Production-ready, well-documented code
-- ✅ **8 Setup Guides:** Comprehensive documentation for integration
+- ✅ **Audio System:** Music, SFX, voice announcements, audio settings persistence
+- ✅ **33 C# Scripts:** Production-ready, well-documented code
+- ✅ **9 Setup Guides:** Comprehensive documentation for integration
 
 ---
 
@@ -97,6 +98,16 @@ Follow **PHASE_2_INTEGRATION.md** to create your first character:
 - KnockdownRecoverySystem with wakeup invulnerability
 - Enhanced visual feedback for all actions
 
+### Phase 6: Audio System ✓
+- Centralized AudioManager with music, SFX, and voice management
+- SoundEffectsLibrary for organized sound configuration
+- State-based music transitions via MusicManager
+- Voice announcer system with game event integration
+- Audio settings persistence with PlayerPrefs
+- Event-driven audio triggered by combat and game events
+- Object pooling for efficient SFX playback (4x source pool)
+- Smooth music fade transitions and announcement queuing
+
 ---
 
 ## Documentation
@@ -111,6 +122,7 @@ Follow **PHASE_2_INTEGRATION.md** to create your first character:
 | **PHASE_3_ANIMATION_GUIDE.md** | Animator setup, animation synchronization |
 | **PHASE_4_UI_GUIDE.md** | Game flow, menus, HUD, UI integration |
 | **PHASE_5_ADVANCED_MECHANICS_GUIDE.md** | Blocking, specials, particles, knockdown |
+| **PHASE_6_AUDIO_GUIDE.md** | Audio system setup, music, SFX, voice, settings |
 
 ---
 
@@ -185,6 +197,14 @@ Final = Base × ZoneMultiplier × ComboScalar
 - SpecialMovesManager.cs — Special move detection & execution
 - ParticleEffectManager.cs — Visual feedback with pooling
 - KnockdownRecoverySystem.cs — Knockdown and wakeup mechanics
+
+**Audio (Phase 6):**
+- AudioManager.cs — Centralized audio playback (music, SFX, voice)
+- SoundEffectsLibrary.cs — ScriptableObject sound organization
+- MusicManager.cs — State-based music transitions
+- AudioSettings.cs — Volume persistence with PlayerPrefs
+- VoiceAnnouncerSystem.cs — Announcer lines and commentary
+- AudioEventIntegrator.cs — Event-driven audio triggers
 
 ✅ **Modular** — Use individual systems or full framework  
 ✅ **Extensible** — Easy to add special moves, blocking, etc.  
