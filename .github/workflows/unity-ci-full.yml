@@ -37,7 +37,6 @@ jobs:
         uses: game-ci/unity-test-runner@v2
         with:
           unityVersion: ${{ env.UNITY_VERSION }}
-          runTests: true
           testMode: all
 
       - name: Build Windows standalone
